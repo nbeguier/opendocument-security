@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-""" ODT Macro Lister """
+""" OpenDocument Security """
 
 # Standard library imports
 import logging
@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 
 VERSION = '1.0.0'
 
-LOGGER = logging.getLogger('odt-macro-lister')
+LOGGER = logging.getLogger('opendocument-security')
 
 def find_rec(node, element, result):
     for item in node:
