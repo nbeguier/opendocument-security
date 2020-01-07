@@ -8,6 +8,7 @@ pip3 install -r requirements.txt
 
 ### Usage
 
+```
 $ ./opendocument-security.py examples/vba-nested-ole.odt 
 > Parsing ./examples/vba-nested-ole.odt
 > This OpenDocument contains macro !
