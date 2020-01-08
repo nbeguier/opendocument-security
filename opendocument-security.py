@@ -13,10 +13,21 @@ import xml.etree.ElementTree as ET
 # Debug
 # from pdb import set_trace as st
 
-VERSION = '1.1.0'
+VERSION = '1.1.1'
 
 logging.basicConfig(format='%(message)s')
 LOGGER = logging.getLogger('opendocument-security')
+
+def get_content_zip_path(content_path):
+    """
+    Returns the content path inside zip archive
+    """
+    content_path = content_path.replace('/./', '/')
+    if content_path.startswith('/'):
+        content_path = content_path[1:]
+    if content_path == '':
+        return 'content.xml'
+    return '{}/content.xml'.format(content_path)
 
 def display_macro(od_zipfile):
     """
@@ -70,13 +81,15 @@ def get_tag(content, tag):
     for i in content.decode('utf-8', 'ignore').split(' '):
         if i.startswith(tag+'='):
             return i.split('"')[-2]
+    return None
 
 def display_event_listener(od_zipfile, content_path, indent=''):
     """
     This function is parsing the file and displaying macro in event-listener
     """
-    LOGGER.warning('%s> Entering in %s', indent, content_path)
-    with od_zipfile.open(content_path) as content:
+    content_zip_path = get_content_zip_path(content_path)
+    LOGGER.warning('%s> Entering in %s', indent, content_zip_path)
+    with od_zipfile.open(content_zip_path) as content:
         raw_content = content.read()
         try:
             root = ET.fromstring(raw_content)
@@ -87,19 +100,19 @@ def display_event_listener(od_zipfile, content_path, indent=''):
         script_prefix = get_tag(raw_content, 'xmlns:script')
         draw_prefix = get_tag(raw_content, 'xmlns:draw')
         xlink_prefix = get_tag(raw_content, 'xmlns:xlink')
-        if office_prefix is None:
-            LOGGER.warning('%s> Exiting %s', indent, content_path)
+        if not office_prefix:
+            LOGGER.warning('%s> Exiting %s', indent, content_zip_path)
             return False
-        if script_prefix is not None:
+        if script_prefix:
             get_event_listeners(root, script_prefix, indent+'  ')
-        if draw_prefix and xlink_prefix is not None:
+        if draw_prefix and xlink_prefix:
             for ole_object in get_ole_objects(root, draw_prefix):
-                draw_href = ole_object.attrib['{'+xlink_prefix+'}'+'href'].replace('./', '')
+                draw_href = ole_object.attrib['{'+xlink_prefix+'}'+'href']
                 display_event_listener(
                     od_zipfile,
-                    '{}/{}'.format(draw_href, 'content.xml'),
+                    '{}/{}'.format(content_path, draw_href),
                     indent=indent+'  ')
-    LOGGER.warning('%s> Exiting %s', indent, content_path)
+    LOGGER.warning('%s> Exiting %s', indent, content_zip_path)
     return True
 
 if __name__ == '__main__':
@@ -115,5 +128,5 @@ if __name__ == '__main__':
     LOGGER.warning('> Parsing %s', OD_PATH)
     IS_MACRO = display_macro(OD_ZIP_FILE)
     if IS_MACRO:
-        display_event_listener(OD_ZIP_FILE, 'content.xml')
+        display_event_listener(OD_ZIP_FILE, '')
     OD_ZIP_FILE.close()
