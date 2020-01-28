@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 # Debug
 # from pdb import set_trace as st
 
-VERSION = '1.2.0'
+VERSION = '1.2.1'
 
 logging.basicConfig(format='%(message)s')
 LOGGER = logging.getLogger('opendocument-security')
@@ -181,9 +181,11 @@ if __name__ == '__main__':
         IS_MACRO = display_macro_flat(OD_PATH)
         if IS_MACRO:
             display_event_listener_flat(OD_PATH)
+        LOGGER.warning('> Closing Flat OpenDocument %s', OD_PATH)
     else:
         LOGGER.warning('> Parsing OpenDocument %s', OD_PATH)
         IS_MACRO = display_macro_OD(OD_ZIP_FILE)
         if IS_MACRO:
             display_event_listener_OD(OD_ZIP_FILE, '')
+        LOGGER.warning('> Closing OpenDocument %s', OD_PATH)
         OD_ZIP_FILE.close()
