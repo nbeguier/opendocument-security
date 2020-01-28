@@ -1,6 +1,12 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
-""" OpenDocument Security """
+"""
+OpenDocument Security
+
+Copyright 2020 Nicolas BEGUIER
+Licensed under the Apache License, Version 2.0
+Written by Nicolas BEGUIER (nicolas_beguier@hotmail.com)
+
+"""
 
 # Standard library imports
 import logging
@@ -13,7 +19,7 @@ import xml.etree.ElementTree as ET
 # Debug
 # from pdb import set_trace as st
 
-VERSION = '1.2.1'
+VERSION = '1.2.2'
 
 logging.basicConfig(format='%(message)s')
 LOGGER = logging.getLogger('opendocument-security')
