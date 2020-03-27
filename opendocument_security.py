@@ -5,7 +5,6 @@ OpenDocument Security
 Copyright 2020 Nicolas BEGUIER
 Licensed under the Apache License, Version 2.0
 Written by Nicolas BEGUIER (nicolas_beguier@hotmail.com)
-
 """
 
 # Standard library imports
@@ -19,7 +18,7 @@ import xml.etree.ElementTree as ET
 # Debug
 # from pdb import set_trace as st
 
-VERSION = '1.2.2'
+VERSION = '1.2.3'
 
 logging.basicConfig(format='%(message)s')
 LOGGER = logging.getLogger('opendocument-security')
@@ -35,7 +34,7 @@ def get_content_zip_path(content_path):
         return 'content.xml'
     return '{}/content.xml'.format(content_path)
 
-def display_macro_OD(od_zipfile):
+def display_macro_od(od_zipfile):
     """
     This function returns the list of existing macro
     """
@@ -137,7 +136,7 @@ def display_event_listener_flat(od_file, indent=''):
     return True
 
 
-def display_event_listener_OD(od_zipfile, content_path, indent=''):
+def display_event_listener_od(od_zipfile, content_path, indent=''):
     """
     This function is parsing the file and displaying macro in event-listener
     """
@@ -162,7 +161,7 @@ def display_event_listener_OD(od_zipfile, content_path, indent=''):
         if draw_prefix and xlink_prefix:
             for ole_object in get_ole_objects(root, draw_prefix):
                 draw_href = ole_object.attrib['{'+xlink_prefix+'}'+'href']
-                display_event_listener_OD(
+                display_event_listener_od(
                     od_zipfile,
                     '{}/{}'.format(content_path, draw_href),
                     indent=indent+'  ')
@@ -190,8 +189,8 @@ if __name__ == '__main__':
         LOGGER.warning('> Closing Flat OpenDocument %s', OD_PATH)
     else:
         LOGGER.warning('> Parsing OpenDocument %s', OD_PATH)
-        IS_MACRO = display_macro_OD(OD_ZIP_FILE)
+        IS_MACRO = display_macro_od(OD_ZIP_FILE)
         if IS_MACRO:
-            display_event_listener_OD(OD_ZIP_FILE, '')
+            display_event_listener_od(OD_ZIP_FILE, '')
         LOGGER.warning('> Closing OpenDocument %s', OD_PATH)
         OD_ZIP_FILE.close()
