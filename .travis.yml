@@ -5,9 +5,15 @@ python:
   - 3.6
   - 3.7
   - 3.8
+  - 3.9
 install:
   - pip3 install -U pip
   - pip3 install -U pylint
   - pip3 install -r requirements.txt
 script:
   - pylint opendocument_security.py
+  - python opendocument_security.py examples/only-ole-object.odt
+  - python opendocument_security.py examples/vba-nested-ole.odt
+  - python opendocument_security.py examples/spreadsheet-with-macro.ods
+  - python opendocument_security.py examples/simple-vba.fodt
+
