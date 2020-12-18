@@ -1,6 +1,6 @@
 # OpenDocument Security
 
-[![Build Status](https://travis-ci.org/nbeguier/opendocument-security.svg?branch=master)](https://travis-ci.org/nbeguier/opendocument-security) [![Python 3.5|3.9](https://img.shields.io/badge/python-3.5|3.9-green.svg)](https://www.python.org/) [![License](https://img.shields.io/github/license/nbeguier/opendocument-security?color=blue)](https://github.com/nbeguier/opendocument-security/blob/master/LICENSE)
+[![Build Status](https://travis-ci.com/nbeguier/opendocument-security.svg?branch=master)](https://travis-ci.com/nbeguier/opendocument-security) [![Python 3.5|3.9](https://img.shields.io/badge/python-3.5|3.9-green.svg)](https://www.python.org/) [![License](https://img.shields.io/github/license/nbeguier/opendocument-security?color=blue)](https://github.com/nbeguier/opendocument-security/blob/master/LICENSE)
 
 OpenDocument security toolbox
 
