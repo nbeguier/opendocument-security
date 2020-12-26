@@ -8,7 +8,9 @@ Written by Nicolas BEGUIER (nicolas_beguier@hotmail.com)
 """
 
 # Standard library imports
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import logging
+from pathlib import Path
 import sys
 import zipfile
 
@@ -18,7 +20,7 @@ import xml.etree.ElementTree as ET
 # Debug
 # from pdb import set_trace as st
 
-VERSION = '1.2.3'
+VERSION = '1.3.0'
 
 logging.basicConfig(format='%(message)s')
 LOGGER = logging.getLogger('opendocument-security')
@@ -168,11 +170,18 @@ def display_event_listener_od(od_zipfile, content_path, indent=''):
     LOGGER.warning('%s> Exiting %s', indent, content_zip_path)
     return True
 
-if __name__ == '__main__':
-    OD_PATH = sys.argv[1]
-    IS_FLAT_OPENDOCUMENT = False
+def main(od_path):
+    """
+    Main function
+    """
+    od_path = Path(ARGS.od_path)
+    if not od_path.is_file():
+        LOGGER.critical('%s is not a file...', od_path)
+        sys.exit(1)
+
+    is_flat_opendocument = False
     try:
-        OD_ZIP_FILE = zipfile.ZipFile(OD_PATH, 'r')
+        od_zip_file = zipfile.ZipFile(od_path, 'r')
     except IOError:
         LOGGER.critical('This file seems corrupted')
         sys.exit(1)
@@ -180,17 +189,34 @@ if __name__ == '__main__':
         LOGGER.critical(err)
         sys.exit(1)
     except zipfile.BadZipfile:
-        IS_FLAT_OPENDOCUMENT = True
-    if IS_FLAT_OPENDOCUMENT:
-        LOGGER.warning('> Parsing Flat OpenDocument %s', OD_PATH)
-        IS_MACRO = display_macro_flat(OD_PATH)
-        if IS_MACRO:
-            display_event_listener_flat(OD_PATH)
-        LOGGER.warning('> Closing Flat OpenDocument %s', OD_PATH)
+        is_flat_opendocument = True
+    if is_flat_opendocument:
+        LOGGER.warning('> Parsing Flat OpenDocument %s', od_path)
+        is_macro = display_macro_flat(od_path)
+        if is_macro:
+            display_event_listener_flat(od_path)
+        LOGGER.warning('> Closing Flat OpenDocument %s', od_path)
     else:
-        LOGGER.warning('> Parsing OpenDocument %s', OD_PATH)
-        IS_MACRO = display_macro_od(OD_ZIP_FILE)
-        if IS_MACRO:
-            display_event_listener_od(OD_ZIP_FILE, '')
-        LOGGER.warning('> Closing OpenDocument %s', OD_PATH)
-        OD_ZIP_FILE.close()
+        LOGGER.warning('> Parsing OpenDocument %s', od_path)
+        is_macro = display_macro_od(od_zip_file)
+        if is_macro:
+            display_event_listener_od(od_zip_file, '')
+        LOGGER.warning('> Closing OpenDocument %s', od_path)
+        od_zip_file.close()
+
+
+if __name__ == '__main__':
+    PARSER = ArgumentParser(
+        formatter_class=ArgumentDefaultsHelpFormatter
+    )
+    PARSER = ArgumentParser()
+
+    PARSER.add_argument('--version', action='version', version=VERSION)
+    PARSER.add_argument(
+        'od_path',
+        action='store',
+        help='An opendocument path')
+
+    ARGS = PARSER.parse_args()
+
+    main(ARGS.od_path)
