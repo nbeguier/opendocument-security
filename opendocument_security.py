@@ -10,7 +10,7 @@ Written by Nicolas BEGUIER (nicolas_beguier@hotmail.com)
 # Standard library imports
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import logging
-from pathlib import Path
+from os.path import exists
 import sys
 import zipfile
 
@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 # Debug
 # from pdb import set_trace as st
 
-VERSION = '1.3.0'
+VERSION = '1.3.1'
 
 logging.basicConfig(format='%(message)s')
 LOGGER = logging.getLogger('opendocument-security')
@@ -174,8 +174,7 @@ def main(od_path):
     """
     Main function
     """
-    od_path = Path(ARGS.od_path)
-    if not od_path.is_file():
+    if not exists(od_path):
         LOGGER.critical('%s is not a file...', od_path)
         sys.exit(1)
 
