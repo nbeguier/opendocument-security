@@ -50,4 +50,4 @@ $ ./opendocument-security.py examples/only-ole-object.fodt
 Licensed under the [Apache License](https://github.com/nbeguier/opendocument-security/blob/master/LICENSE), Version 2.0 (the "License").
 
 # Copyright
-Copyright 2020 Nicolas BEGUIER; ([nbeguier](https://beguier.eu/nicolas/) - nicolas_beguier[at]hotmail[dot]com)
+Copyright 2020-2021 Nicolas BEGUIER; ([nbeguier](https://beguier.eu/nicolas/) - nicolas_beguier[at]hotmail[dot]com)
