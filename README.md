@@ -14,7 +14,7 @@ pip3 install -r requirements.txt
 
 ```bash
 # Example with classic OpenDocument
-$ ./opendocument-security.py examples/vba-nested-ole.odt 
+$ python opendocument_security.py examples/vba-nested-ole.odt
 > Parsing OpenDocument examples/vba-nested-ole.odt
 > This OpenDocument contains macro !
   > Object 2/Basic/Standard/TEST.xml
@@ -35,7 +35,7 @@ $ ./opendocument-security.py examples/vba-nested-ole.odt
 
 
 # Example with Flat OpenDocument
-$ ./opendocument-security.py examples/only-ole-object.fodt 
+$ python opendocument_security.py examples/only-ole-object.fodt
 > Parsing Flat OpenDocument examples/only-ole-object.fodt
 > This Flat OpenDocument contains macro !
   > [<Element '{http://openoffice.org/2004/office}library-embedded' at 0x7f416deec950>]
